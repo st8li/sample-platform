@@ -29,5 +29,5 @@ test: ## Run the template's unit tests
 	cd templates/python-service/app && python3 -m pytest -q
 
 local-image: ## Build a service image and load it into kind (skip the registry): make local-image NAME=hello
-	docker build -t ghcr.io/YOUR_USER/$(NAME):0.1.0 services/$(NAME)
-	kind load docker-image ghcr.io/YOUR_USER/$(NAME):0.1.0 --name $(CLUSTER)
+	docker build -t ghcr.io/st8li/$(NAME):0.1.0 services/$(NAME)
+	kind load docker-image ghcr.io/st8li/$(NAME):0.1.0 --name $(CLUSTER)

@@ -3,7 +3,7 @@ team: __TEAM__
 replicas: 2
 
 image:
-  repository: ghcr.io/YOUR_USER/__SERVICE_NAME__
+  repository: ghcr.io/st8li/__SERVICE_NAME__
   tag: "0.1.0"          # CI bumps this on every merge to main
 
 resources:

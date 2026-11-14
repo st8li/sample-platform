@@ -3,7 +3,7 @@ team: platform-demo
 replicas: 2
 
 image:
-  repository: ghcr.io/YOUR_USER/hello
+  repository: ghcr.io/st8li/hello
   tag: "0.1.1"
 
 resources:
