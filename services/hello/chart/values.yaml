@@ -1,0 +1,21 @@
+# Developers only need to touch this file. The platform owns the templates.
+team: platform-demo
+replicas: 2
+
+image:
+  repository: ghcr.io/YOUR_USER/hello
+  tag: "0.1.0"          # CI bumps this on every merge to main
+
+resources:
+  requests: { cpu: 50m, memory: 64Mi }
+  limits: { memory: 128Mi }
+
+ingress:
+  enabled: true
+  host: hello.localtest.me   # *.localtest.me resolves to 127.0.0.1
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPU: 70

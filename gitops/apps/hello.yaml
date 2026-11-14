@@ -1,0 +1,22 @@
+# Used by scripts/new-service.sh. Argo CD ignores .tpl files.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hello
+  namespace: argocd
+  labels:
+    team: platform-demo
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/st8li/sample-platform.git
+    targetRevision: main
+    path: services/hello/chart
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: hello
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }
+    syncOptions: [CreateNamespace=true]

@@ -1,0 +1,26 @@
+# No unbounded containers — protects shared nodes from noisy neighbours.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-requests-limits
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-resources
+      match:
+        any:
+          - resources:
+              kinds: [Pod]
+              namespaceSelector:
+                matchExpressions:
+                  - { key: kubernetes.io/metadata.name, operator: NotIn,
+                      values: [kube-system, argocd, kyverno, monitoring, ingress-nginx, local-path-storage] }
+      validate:
+        message: "Containers need CPU/memory requests and a memory limit."
+        pattern:
+          spec:
+            containers:
+              - resources:
+                  requests: { cpu: "?*", memory: "?*" }
+                  limits: { memory: "?*" }

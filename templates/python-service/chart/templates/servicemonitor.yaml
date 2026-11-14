@@ -1,0 +1,11 @@
+# Prometheus scrapes /metrics automatically — observability is built in.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Chart.Name }}
+  labels: {{- include "svc.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels: {{- include "svc.selector" . | nindent 6 }}
+  endpoints:
+    - { port: http, path: /metrics, interval: 30s }

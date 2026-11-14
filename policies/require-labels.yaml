@@ -1,0 +1,27 @@
+# Every workload must say who owns it — on-call needs to know who to page.
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-team-label
+  annotations:
+    policies.kyverno.io/description: Deployments must carry app.kubernetes.io/name and team labels.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: check-labels
+      match:
+        any:
+          - resources:
+              kinds: [Deployment, StatefulSet]
+              namespaceSelector:
+                matchExpressions:
+                  - { key: kubernetes.io/metadata.name, operator: NotIn,
+                      values: [kube-system, argocd, kyverno, monitoring, ingress-nginx, local-path-storage] }
+      validate:
+        message: "Add labels 'app.kubernetes.io/name' and 'team' (use the golden-path template)."
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "?*"
+              team: "?*"
